@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import ReactDOM from "react-dom";
 
 const Popup = () => {
   const [count, setCount] = useState(0);
   const [currentURL, setCurrentURL] = useState<string>();
-  const [data, setData] = useState<any[]>([]);
 
   useEffect(() => {
     chrome.action.setBadgeText({ text: count.toString() });
@@ -17,28 +15,14 @@ const Popup = () => {
     });
   }, []);
 
-  useEffect(() => {
-        const fetchData = async () => {
-          const result = await axios(
-            'http://localhost:8080/v1/training/',
-        );
-    
-    setData(result.data);
-  };
-    
-        fetchData();
-      }, []);
-
   const changeBackground = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       const tab = tabs[0];
-      console.log(tab.url);
       if (tab.id) {
         chrome.tabs.sendMessage(
           tab.id,
           {
             color: "#555555",
-            data,
           },
           (msg) => {
             console.log("result message:", msg);
