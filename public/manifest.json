@@ -25,14 +25,12 @@
     "service_worker": "js/background.js"
   },
 
-  "host_permissions": [
-    "http://localhost:8080/*"
+  "permissions": [
+    "tabs"
   ],
 
-
-  "content_security_policy": {
-    "sandbox": "sandbox allow-scripts; script-src 'self' 'unsafe-eval' https://ajax.googleapis.com/ ; object-src 'self';"
-  }
-
+  "host_permissions": [
+    "http://localhost:8080/*"
+  ]
   
 }

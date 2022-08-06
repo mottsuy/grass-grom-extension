@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import ReactDOM from "react-dom";
 
 const Popup = () => {
@@ -16,35 +15,33 @@ const Popup = () => {
       setCurrentURL(tabs[0].url);
     });
   }, []);
-
-  useEffect(() => {
-        const fetchData = async () => {
-          const result = await axios(
-            'http://localhost:8080/v1/training/',
-        );
     
-    setData(result.data);
-  };
-    
-        fetchData();
-      }, []);
 
   const changeBackground = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      const tab = tabs[0];
-      console.log(tab.url);
-      if (tab.id) {
-        chrome.tabs.sendMessage(
-          tab.id,
-          {
-            color: "#555555",
-            data,
-          },
-          (msg) => {
-            console.log("result message:", msg);
-          }
-        );
+    chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
+        const tab = tabs[0];
+        let url: URL | null = null;
+        let start: string = "hoge";
+        let end: string = "hoge";
+      if(tabs[0].url) {
+        url = new URL(tabs[0].url);
+        const params = new URLSearchParams(url.search);
+        for(let param of params){
+          if(param[0] === "from") start = param[1];
+          else if(param[0] === "to") end = param[1];
+        }
       }
+        if (tab.id) {
+          chrome.tabs.sendMessage(
+            tab.id,
+            {
+              color: "#555555",
+            },
+            (msg) => {
+              console.log("result message:", msg);
+            }
+          );
+        }
     });
   };
 
