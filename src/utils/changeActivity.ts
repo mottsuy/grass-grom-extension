@@ -7,6 +7,10 @@ export const changeActivity = (
 
   // replaceするdiv
   let div = document.createElement("div");
+  console.log(wrapper.getAttribute("id"));
+
+  let id = wrapper.getAttribute("id");
+  if (id) div.setAttribute("id", id);
 
   let h = document.createElement("h3");
   h.textContent = defaultText;
