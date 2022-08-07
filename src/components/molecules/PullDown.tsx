@@ -24,7 +24,9 @@ const dot = (color = "transparent") => ({
 });
 
 type Props = {
-  onChange: (e:any) => void
+  onChange: (e:any) => void;
+  onMenuOpen:() => void;
+  onMenuClose:() => void;
 }
 
 const colourStyles: StylesConfig<ColorOption> = {
@@ -63,15 +65,19 @@ const colourStyles: StylesConfig<ColorOption> = {
   singleValue: (styles, { data }) => ({ ...styles, ...dot(data.color) }),
 };
 
-const PullDown:FC<Props> = (props) => (
+const PullDown:FC<Props> = (props) => {
+  return(
   <Box>
     <Select
       defaultValue={colourOptions[0]}
       options={colourOptions}
       styles={colourStyles}
       onChange={props.onChange}
+      onMenuOpen={props.onMenuOpen}
+      onMenuClose={props.onMenuClose}
     />
   </Box>
-);
+  );
+};
 
 export default PullDown;
