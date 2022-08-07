@@ -3,6 +3,8 @@ import * as ReactDOM from "react-dom";
 import { changeColors } from "./utils/changeColors";
 import { getAll } from "./utils/api";
 import { getDate } from "./utils/getDate";
+import { changeOverview } from "./utils/changeOverview";
+import { changeActivity } from "./utils/changeActivity";
 
 const createOrginElement = (id: string, component: any) => {
   let contactBotAlertDom = document.getElementById(id);
@@ -38,6 +40,17 @@ chrome.runtime.onMessage.addListener(async function (
         ?.textContent?.trim();
       const data = await getAll(username);
       changeColors(targetElements, data.trainings, "walking");
+
+      const overviewWrapper = document.querySelector("#user-activity-overview");
+      if (overviewWrapper)
+        changeOverview(overviewWrapper, data.trainings, "walking");
+
+      const activityWrapper = document.querySelector(
+        "#js-contribution-activity"
+      );
+      if (activityWrapper)
+        changeActivity(activityWrapper, data.trainings, "walking");
+
       console.log(getDate());
     } else {
       sendResponse("failed");
