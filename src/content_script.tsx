@@ -2,7 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { changeColors } from "./utils/changeColors";
 import { getAll } from "./utils/api";
-import { getDate } from "./utils/getDate";
 import { changeOverview } from "./utils/changeOverview";
 import { changeActivity } from "./utils/changeActivity";
 
@@ -56,7 +55,7 @@ chrome.runtime.onMessage.addListener(async function (
         if(floatRight.length > 1) floatRight[floatRight.length - 1].remove();
         
         const overviewWrapper = document.querySelector("#user-activity-overview");
-      　if (overviewWrapper) changeOverview(overviewWrapper, data.trainings, msg.activity);
+        if (overviewWrapper) changeOverview(overviewWrapper, data.trainings, msg.activity);
 
         const activityWrapper = document.querySelector(
           "#js-contribution-activity"
