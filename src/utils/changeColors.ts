@@ -18,6 +18,7 @@ export const changeColors = (
       })
   );
 
+  let contributions = 0;
   for (let i = 0; i < elements.length - 5; i++) {
     const date = elements[i].getAttribute("data-date");
 
@@ -27,12 +28,16 @@ export const changeColors = (
         setColor(elements[i], "#ebedf0");
       } else if (value <= 1500) {
         setColor(elements[i], colors[activity].color01);
+        contributions++;
       } else if (value <= 3000) {
         setColor(elements[i], colors[activity].color04);
+        contributions++;
       } else if (value <= 6000) {
         setColor(elements[i], colors[activity].color07);
+        contributions++;
       } else {
         setColor(elements[i], colors[activity].color);
+        contributions++;
       }
     }
   }
@@ -42,6 +47,7 @@ export const changeColors = (
   setColor(elements[elements.length - 2], colors[activity].color07);
   setColor(elements[elements.length - 1], colors[activity].color);
 
+  return contributions;
 };
 
 const setColor = (element: any, color: string) => {

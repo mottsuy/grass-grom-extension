@@ -1,6 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { changeColors } from "./utils/changeColors";
+import { changeContributions } from "./utils/changeContributions";
 import { getAll } from "./utils/api";
 import { changeOverview } from "./utils/changeOverview";
 import { changeActivity } from "./utils/changeActivity";
@@ -50,7 +51,9 @@ chrome.runtime.onMessage.addListener(async function (
           .querySelector("[itemprop=additionalName]")
           ?.textContent?.trim();
         const data = await getAll(username);
-        changeColors(targetElements, data.trainings, msg.activity);
+        const contributions = changeColors(targetElements, data.trainings, msg.activity);
+        changeContributions(contributions, msg.activity);
+        
         const floatRight = document.querySelectorAll(".js-calendar-graph .float-right");
         if(floatRight.length > 1) floatRight[floatRight.length - 1].remove();
         
