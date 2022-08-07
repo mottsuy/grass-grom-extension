@@ -2,6 +2,9 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { changeColors } from "./utils/changeColors";
 import { getAll } from "./utils/api";
+import { getDate } from "./utils/getDate";
+import { changeOverview } from "./utils/changeOverview";
+import { changeActivity } from "./utils/changeActivity";
 
 const createOrginElement = (id: string, component: any) => {
   let contactBotAlertDom = document.getElementById(id);
@@ -51,7 +54,15 @@ chrome.runtime.onMessage.addListener(async function (
         changeColors(targetElements, data.trainings, msg.activity);
         const floatRight = document.querySelectorAll(".js-calendar-graph .float-right");
         if(floatRight.length > 1) floatRight[floatRight.length - 1].remove();
-      }
+        
+        const overviewWrapper = document.querySelector("#user-activity-overview");
+      　if (overviewWrapper) changeOverview(overviewWrapper, data.trainings, msg.activity);
+
+        const activityWrapper = document.querySelector(
+          "#js-contribution-activity"
+        );
+        if (activityWrapper) changeActivity(activityWrapper, data.trainings, msg.activity);
+        }
     } else {
       sendResponse("failed");
     }
