@@ -44,6 +44,10 @@ chrome.runtime.onMessage.addListener(async function (
           (ajaxList as HTMLElement).style.setProperty('display', 'none');
         }
         document.querySelector(".svg-tip")?.classList.remove("svg-tip");
+        const organizations = document.querySelector(".js-org-filter-links-container")
+        if (organizations) {
+          (organizations as HTMLElement).style.setProperty('display', 'none');
+        }
 
         // getメソッド
         const username = document
