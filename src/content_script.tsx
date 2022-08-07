@@ -25,15 +25,19 @@ chrome.runtime.onMessage.addListener(async function (
 ) {
   try {
     if (msg) {
+      const html = document.querySelector('html');
       const targetElements = document.querySelectorAll(
         ".ContributionCalendar-day"
       );
+
+      let isDark = false;
       
       if(targetElements.length <= 0 && msg.type === 'init') {
         sendResponse({status: true});
       } else {
         sendResponse({status: false});
       }
+
 
       if(msg.type !== 'init') {
         //contributionのUIを削除
@@ -49,12 +53,18 @@ chrome.runtime.onMessage.addListener(async function (
           (organizations as HTMLElement).style.setProperty('display', 'none');
         }
 
+        //dark mode
+        const noValueElement = targetElements[targetElements.length - 5];
+        const cssStyleDeclaration = getComputedStyle(noValueElement, null);
+        const fillColor = cssStyleDeclaration.getPropertyValue("fill");
+        
+
         // getメソッド
         const username = document
           .querySelector("[itemprop=additionalName]")
           ?.textContent?.trim();
         const data = await getAll(username);
-        changeColors(targetElements, data.trainings, msg.activity);
+        changeColors(targetElements, data.trainings, msg.activity, fillColor);
         const floatRight = document.querySelectorAll(".js-calendar-graph .float-right");
         if(floatRight.length > 1) floatRight[floatRight.length - 1].remove();
         
