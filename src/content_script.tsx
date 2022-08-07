@@ -35,9 +35,8 @@ chrome.runtime.onMessage.addListener(async function (
       if(targetElements.length <= 0 && msg.type === 'init') {
         sendResponse({status: true});
       } else {
-        sendResponse({status: false});
+        sendResponse({ status: false });
       }
-
 
       if(msg.type !== 'init') {
         //contributionのUIを削除
@@ -64,18 +63,26 @@ chrome.runtime.onMessage.addListener(async function (
           .querySelector("[itemprop=additionalName]")
           ?.textContent?.trim();
         const data = await getAll(username);
+        
+        // 色の書き換え
         changeColors(targetElements, data.trainings, msg.activity, fillColor);
         const floatRight = document.querySelectorAll(".js-calendar-graph .float-right");
         if(floatRight.length > 1) floatRight[floatRight.length - 1].remove();
-        
-        const overviewWrapper = document.querySelector("#user-activity-overview");
-        if (overviewWrapper) changeOverview(overviewWrapper, data.trainings, msg.activity);
 
+        // Overview の書き換え
+        const overviewWrapper = document.querySelector(
+          "#user-activity-overview"
+        );
+        if (overviewWrapper)
+          changeOverview(overviewWrapper, data.trainings, msg.activity);
+
+        // Activityの書き換え
         const activityWrapper = document.querySelector(
           "#js-contribution-activity"
         );
-        if (activityWrapper) changeActivity(activityWrapper, data.trainings, msg.activity);
-        }
+        if (activityWrapper)
+          changeActivity(activityWrapper, data.trainings, msg.activity);
+      }
     } else {
       sendResponse("failed");
     }

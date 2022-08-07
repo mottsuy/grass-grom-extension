@@ -28,6 +28,7 @@ export const changeOverview = (
   div.textContent = defaultText;
 
   let contributeArea = wrapper.querySelector(".wb-break-word");
+  div.setAttribute("class", "wb-break-word");
   contributeArea?.replaceWith(div);
 
   // Replace Graph Area
@@ -39,6 +40,7 @@ export const changeOverview = (
   let graphArea = wrapper.querySelector(
     ".js-activity-overview-graph-container"
   );
+  img.setAttribute("class", "js-activity-overview-graph-container");
   graphArea?.replaceWith(img);
 };
 
