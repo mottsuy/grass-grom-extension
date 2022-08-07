@@ -34,7 +34,6 @@ export const changeOverview = (
   let img = document.createElement("img");
   img.src = imgLink;
   img.width = 200;
-  img.height = 200;
 
   let graphArea = wrapper.querySelector(
     ".js-activity-overview-graph-container"
