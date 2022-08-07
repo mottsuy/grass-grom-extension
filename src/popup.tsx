@@ -9,7 +9,8 @@ import { colors } from "./constants/color";
 const Popup = () => {
   const [count, setCount] = useState(0);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const [activity, setActivity] = useState<ActivityProps>("walking")
+  const [activity, setActivity] = useState<ActivityProps>("walking");
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   useEffect(() => {
     chrome.action.setBadgeText({ text: count.toString() });
@@ -65,13 +66,15 @@ const Popup = () => {
 
   return (
     <>
-    <Container>
+    <Container isMenuOpen={isMenuOpen}>
       <Title />
       <SelectForm
         onClick={changeBackground}
         disabled={isDisabled}
         backgroundColor={colors[activity].color}
         onChange={(e) => setActivity(e.value)}
+        onMenuOpen={() => setIsMenuOpen(true)}
+        onMenuClose={() => setIsMenuOpen(false)}
       />
     </Container>
     </>
