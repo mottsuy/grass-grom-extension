@@ -29,29 +29,40 @@ chrome.runtime.onMessage.addListener(async function (
       const targetElements = document.querySelectorAll(
         ".ContributionCalendar-day"
       );
-      if (targetElements.length <= 0) {
-        console.log("hoge");
-        sendResponse({ status: true });
+      
+      if(targetElements.length <= 0 && msg.type === 'init') {
+        sendResponse({status: true});
+      } else {
+        sendResponse({status: false});
       }
-      sendResponse({ status: false });
 
-      const username = document
-        .querySelector("[itemprop=additionalName]")
-        ?.textContent?.trim();
-      const data = await getAll(username);
-      changeColors(targetElements, data.trainings, "walking");
+      if(msg.type !== 'init') {
+        //contributionのUIを削除
+        const contributionList = document.querySelector(".contribution-activity-listing");
+        const ajaxList = document.querySelector(".ajax-pagination-form");
+        if(contributionList && ajaxList) {
+          (contributionList as HTMLElement).style.setProperty('display', 'none');
+          (ajaxList as HTMLElement).style.setProperty('display', 'none');
+        }
+        document.querySelector(".svg-tip")?.classList.remove("svg-tip");
 
-      const overviewWrapper = document.querySelector("#user-activity-overview");
-      if (overviewWrapper)
-        changeOverview(overviewWrapper, data.trainings, "walking");
+        // getメソッド
+        const username = document
+          .querySelector("[itemprop=additionalName]")
+          ?.textContent?.trim();
+        const data = await getAll(username);
+        changeColors(targetElements, data.trainings, msg.activity);
+        const floatRight = document.querySelectorAll(".js-calendar-graph .float-right");
+        if(floatRight.length > 1) floatRight[floatRight.length - 1].remove();
+        
+        const overviewWrapper = document.querySelector("#user-activity-overview");
+      　if (overviewWrapper) changeOverview(overviewWrapper, data.trainings, msg.activity);
 
-      const activityWrapper = document.querySelector(
-        "#js-contribution-activity"
-      );
-      if (activityWrapper)
-        changeActivity(activityWrapper, data.trainings, "walking");
-
-      console.log(getDate());
+        const activityWrapper = document.querySelector(
+          "#js-contribution-activity"
+        );
+        if (activityWrapper) changeActivity(activityWrapper, data.trainings, msg.activity);
+        }
     } else {
       sendResponse("failed");
     }
