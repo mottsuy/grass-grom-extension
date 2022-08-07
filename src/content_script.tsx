@@ -5,17 +5,15 @@ import { changeContributions } from "./utils/changeContributions";
 import { getAll } from "./utils/api";
 import { changeOverview } from "./utils/changeOverview";
 import { changeActivity } from "./utils/changeActivity";
+import Overview from "./components/atoms/Overview";
 
 const createOrginElement = (id: string, component: any) => {
-  let contactBotAlertDom = document.getElementById(id);
-  if (!contactBotAlertDom) {
     const elem = document.createElement("div");
     elem.setAttribute("id", id);
-    const main = document.querySelector("body");
+    const main = document.querySelector("#custom-activity-overview");
     if (main) {
       main.appendChild(elem);
     }
-  }
   ReactDOM.render(component, document.getElementById(id));
 };
 
@@ -69,14 +67,23 @@ chrome.runtime.onMessage.addListener(async function (
 
         const floatRight = document.querySelectorAll(".js-calendar-graph .float-right");
         if(floatRight.length > 1) floatRight[floatRight.length - 1].remove();
-
-        // Overview の書き換え
-        const overviewWrapper = document.querySelector(
-          "#user-activity-overview"
-        );
-        if (overviewWrapper)
-          changeOverview(overviewWrapper, data.trainings, msg.activity);
-
+        
+        // Overviewの書き換え
+        const overviewWrapper = document.querySelector("#user-activity-overview");
+        if (overviewWrapper) { 
+          const overviewData = changeOverview(overviewWrapper, data.trainings, msg.activity);
+          createOrginElement(
+            "activity-overview-detail",
+            (
+              <Overview 
+                avg={overviewData.avg}
+                mx={overviewData.mx}
+                type={msg.activity}
+              />
+            )
+          )
+        }
+        
         // Activityの書き換え
         const activityWrapper = document.querySelector(
           "#js-contribution-activity"
