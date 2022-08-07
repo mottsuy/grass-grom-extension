@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import Container from "./layouts/Container";
 import SelectForm from "./components/organisms/SelectForm";
 import { ActivityProps } from "./types/Activity";
-import Button from "./components/atoms/Button";
+import Title from "./components/atoms/Title";
 import { colors } from "./constants/color";
 
 const Popup = () => {
@@ -66,6 +66,7 @@ const Popup = () => {
   return (
     <>
     <Container>
+      <Title />
       <SelectForm
         onClick={changeBackground}
         disabled={isDisabled}
