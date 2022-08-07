@@ -12,12 +12,18 @@ type Props = {
   disabled: boolean
   backgroundColor: string
   onChange: (e:any) => void
+  onMenuOpen:() => void;
+  onMenuClose:() => void;
 }
 
 const SelectForm:FC<Props> = (props) => {
   return (
     <Box>
-      <PullDown onChange={props.onChange}/>
+      <PullDown 
+        onChange={props.onChange}
+        onMenuOpen={props.onMenuOpen}
+        onMenuClose={props.onMenuClose}
+        />
       <Button
         onClick={props.onClick}
         disabled={props.disabled}
