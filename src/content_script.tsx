@@ -2,7 +2,6 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { changeColors } from "./utils/changeColors";
 import { getAll } from "./utils/api";
-import { getDate } from "./utils/getDate";
 
 const createOrginElement = (id: string, component: any) => {
   let contactBotAlertDom = document.getElementById(id);
@@ -27,18 +26,32 @@ chrome.runtime.onMessage.addListener(async function (
       const targetElements = document.querySelectorAll(
         ".ContributionCalendar-day"
       );
-      if (targetElements.length <= 0) {
-        console.log("hoge");
-        sendResponse({ status: true });
+      
+      if(targetElements.length <= 0 && msg.type === 'init') {
+        sendResponse({status: true});
+      } else {
+        sendResponse({status: false});
       }
-      sendResponse({ status: false });
 
-      const username = document
-        .querySelector("[itemprop=additionalName]")
-        ?.textContent?.trim();
-      const data = await getAll(username);
-      changeColors(targetElements, data.trainings, "walking");
-      console.log(getDate());
+      if(msg.type !== 'init') {
+        //contributionのUIを削除
+        const contributionList = document.querySelector(".contribution-activity-listing");
+        const ajaxList = document.querySelector(".ajax-pagination-form");
+        if(contributionList && ajaxList) {
+          (contributionList as HTMLElement).style.setProperty('display', 'none');
+          (ajaxList as HTMLElement).style.setProperty('display', 'none');
+        }
+        document.querySelector(".svg-tip")?.classList.remove("svg-tip");
+
+        // getメソッド
+        const username = document
+          .querySelector("[itemprop=additionalName]")
+          ?.textContent?.trim();
+        const data = await getAll(username);
+        changeColors(targetElements, data.trainings, msg.activity);
+        const floatRight = document.querySelectorAll(".js-calendar-graph .float-right");
+        if(floatRight.length > 1) floatRight[floatRight.length - 1].remove();
+      }
     } else {
       sendResponse("failed");
     }
