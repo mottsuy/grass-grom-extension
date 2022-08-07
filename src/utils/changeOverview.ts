@@ -1,11 +1,13 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+type ReturnProps = {
+  avg: number;
+  mx: number;
+}
 
 export const changeOverview = (
   wrapper: Element,
   data: any[],
   activity: string
-) => {
+):ReturnProps => {
   // 平均，最大値の計算
   let total = 0;
   let mx = 0;
@@ -15,17 +17,12 @@ export const changeOverview = (
   });
   let avg = total / data.length;
 
-  // テキスト内容の切り替え
-  let defaultText = "Walking " + total + " steps so far, \n";
-  defaultText += Math.trunc(avg) + " steps per day on average and \n";
-  defaultText += mx + " steps per day at maximum. \n";
-  defaultText += "Well Done!";
-
   let imgLink = imgLinks[activity];
 
   // Replace Overview Area
   let div = document.createElement("div");
-  div.textContent = defaultText;
+  div.setAttribute("id", "custom-activity-overview")
+
 
   let contributeArea = wrapper.querySelector(".wb-break-word");
   contributeArea?.replaceWith(div);
@@ -40,6 +37,11 @@ export const changeOverview = (
     ".js-activity-overview-graph-container"
   );
   graphArea?.replaceWith(img);
+
+  return {
+    avg:Math.trunc(avg),
+    mx,
+  }
 };
 
 const imgLinks: { [key: string]: any } = {
