@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import Container from "./layouts/Container";
 import SelectForm from "./components/organisms/SelectForm";
+import { ActivityProps } from "./types/Activity";
+import Button from "./components/atoms/Button";
+import { colors } from "./constants/color";
 
 const Popup = () => {
   const [count, setCount] = useState(0);
-  const [currentURL, setCurrentURL] = useState<string>();
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const [data, setData] = useState<any[]>([]);
+  const [activity, setActivity] = useState<ActivityProps>("walking")
 
   useEffect(() => {
     chrome.action.setBadgeText({ text: count.toString() });
@@ -16,7 +18,6 @@ const Popup = () => {
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       const tab = tabs[0];
-      setCurrentURL(tabs[0].url);
       if (tab.id) {
         chrome.tabs.sendMessage(
           tab.id,
@@ -26,13 +27,11 @@ const Popup = () => {
             status:false,
           },
           (msg) => {
-            console.log(msg)
-            // if(msg.status) {
-            //   console.log(msg.status)
-            //   setIsDisabled(msg.status);
-            // } else {
-            //   setIsDisabled(false);
-            // }
+            if(msg.status) {
+              setIsDisabled(msg.status);
+            } else {
+              setIsDisabled(false);
+            }
           }
         );
       }
@@ -54,10 +53,10 @@ const Popup = () => {
               type: "change",
               color: "#555555",
               url,
+              activity,
             },
             (msg) => {
-              console.log("result message:", msg);
-              
+              console.log(msg);
             }
           );
         }
@@ -67,7 +66,12 @@ const Popup = () => {
   return (
     <>
     <Container>
-      <SelectForm onClick={changeBackground} disabled={isDisabled} backgroundColor={"red"}/>
+      <SelectForm
+        onClick={changeBackground}
+        disabled={isDisabled}
+        backgroundColor={colors[activity].color}
+        onChange={(e) => setActivity(e.value)}
+      />
     </Container>
     </>
   );

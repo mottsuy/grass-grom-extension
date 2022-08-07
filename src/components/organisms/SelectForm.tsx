@@ -8,15 +8,16 @@ const Box = styled.div`
 `;
 
 type Props = {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onClick: () => void
   disabled: boolean
   backgroundColor: string
+  onChange: (e:any) => void
 }
 
 const SelectForm:FC<Props> = (props) => {
   return (
     <Box>
-      <PullDown onChange={(e) => console.log(e.value)}/>
+      <PullDown onChange={props.onChange}/>
       <Button
         onClick={props.onClick}
         disabled={props.disabled}

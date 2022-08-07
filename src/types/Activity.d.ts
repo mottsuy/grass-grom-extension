@@ -1,0 +1,1 @@
+export type ActivityProps = 'walking' | 'running' | 'swimming' | 'cycling';

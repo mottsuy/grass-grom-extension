@@ -1,27 +1,42 @@
 import React, { FC } from "react";
 import styled from '@emotion/styled';
 
+// const StyledButton = styled.button<{ backgroundColor: string; }>`
+  // padding: 5px 20px;
+  // cursor: pointer;
+//   border-radius: 15px;
+//   color: #fff;
+//   background-color: ${(props) => props.backgroundColor};
+//   border-bottom: 5px solid ${(props) => props.backgroundColor};
+  // &:hover {
+  //   margin-top: 3px;
+  //   color: #fff;
+  //   background: ${(props) => props.backgroundColor};
+  //   border-bottom: 2px solid ${(props) => props.backgroundColor};
+  // }
+//   display: block;
+//   margin: auto;
+//   -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+//   box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
+// `;
+
 const StyledButton = styled.button<{ backgroundColor: string; }>`
+  background-color: transparent;
+  color: ${(props) => props.backgroundColor};
+  border-radius: 15px;
+  border-color: ${(props) => props.backgroundColor};
   padding: 5px 20px;
   cursor: pointer;
-  border-radius: 15px;
-  color: #fff;
-  background-color: ${(props) => props.backgroundColor};
-  border-bottom: 5px solid #b84c00;
   &:hover {
     margin-top: 3px;
     color: #fff;
     background: ${(props) => props.backgroundColor};
-    border-bottom: 2px solid #b84c00;
   }
   display: block;
-  margin: auto;
-  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
-  box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
 `;
 
 type Props = {
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onClick: () => void
   disabled: boolean
   backgroundColor: string
 }

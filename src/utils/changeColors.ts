@@ -1,7 +1,10 @@
+import { colors } from '../constants/color';
+import { ActivityProps } from '../types/Activity';
+
 export const changeColors = (
   elements: NodeListOf<Element>,
   data: any[],
-  activity: string
+  activity: ActivityProps
 ) => {
   // 日付ごとにデータを連想配列に格納
   let data_by_date: { [key: string]: any } = {};
@@ -20,20 +23,25 @@ export const changeColors = (
 
     if (date && date in data_by_date) {
       const value = data_by_date[date][activity];
-
       if (value == 0) {
-        setColor(elements[i], "gray");
+        setColor(elements[i], "#ebedf0");
       } else if (value <= 1500) {
-        setColor(elements[i], "lemonchiffon");
+        setColor(elements[i], colors[activity].color01);
       } else if (value <= 3000) {
-        setColor(elements[i], "wheat");
+        setColor(elements[i], colors[activity].color04);
       } else if (value <= 6000) {
-        setColor(elements[i], "burlywood");
+        setColor(elements[i], colors[activity].color07);
       } else {
-        setColor(elements[i], "tan");
+        setColor(elements[i], colors[activity].color);
       }
     }
   }
+  setColor(elements[elements.length - 5], "#ebedf0");
+  setColor(elements[elements.length - 4], colors[activity].color01);
+  setColor(elements[elements.length - 3], colors[activity].color04);
+  setColor(elements[elements.length - 2], colors[activity].color07);
+  setColor(elements[elements.length - 1], colors[activity].color);
+
 };
 
 const setColor = (element: any, color: string) => {
